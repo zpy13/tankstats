@@ -1,1 +1,1 @@
-# django_project_tankstats
+# project_tankstats

@@ -11,18 +11,15 @@ class Tank(models.Model):
     damage = models.IntegerField(null=True)
     penetration = models.IntegerField(null=True)
     reload_time = models.DecimalField(max_digits=5, decimal_places=2,null=True)
-    rate_of_fire = models.DecimalField(max_digits=5, decimal_places=2,null=True)
     aim_time = models.DecimalField(max_digits=5, decimal_places=2,null=True)
     dispersion = models.DecimalField(max_digits=5, decimal_places=2,null=True)
     caliber = models.DecimalField(max_digits=5, decimal_places=2,null=True)
     shell_velocity = models.IntegerField(null=True)
     ammo_capacity = models.IntegerField(null=True)
-    shell_cost = models.IntegerField(null=True)
 
     #Mobility parameters
     top_speed = models.DecimalField(max_digits=5, decimal_places=2,null=True)
     reverse_speed = models.DecimalField(max_digits=5, decimal_places=2,null=True)
-    power = models.DecimalField(max_digits=6, decimal_places=2,null=True)
     power_weight_ratio = models.DecimalField(max_digits=5, decimal_places=2,null=True)
     traverse_speed = models.DecimalField(max_digits=5, decimal_places=2,null=True)
     gun_elevation = models.DecimalField(max_digits=5, decimal_places=2,null=True)
@@ -47,11 +44,12 @@ class Tank(models.Model):
 
     def __str__(self):
         return self.title
+
 class Tag(models.Model):
-    tag = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
-        return self.tag
+        return self.name
 
 class Country(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -66,10 +64,10 @@ class Tank_type(models.Model):
         return self.name
 
 class Tier(models.Model):
-    name = models.IntegerField(null=True)
+    tier = models.IntegerField(null=True)
 
     def __str__(self):
-        return self.name
+        return self.tier
 
 class Comment(models.Model):
     text = models.TextField(
