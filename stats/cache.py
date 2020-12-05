@@ -12,9 +12,9 @@ def get_page(url):
     get html response using selenuium
 
     params: 
-        url: page
+        url: str
     return:
-        response: html response
+        response
     '''
 
     browser = webdriver.Chrome()
@@ -29,9 +29,9 @@ def get_nation_href(url):
     get html reference for nations
 
     params: 
-        url: page
+        url: str
     return:
-        nation_list: a list contains 
+        nation_list: list
     '''
     response = get_page_with_cache(url)
     page = BeautifulSoup(response, features="html.parser")
@@ -45,7 +45,14 @@ def get_nation_href(url):
     return nation_list
 
 def get_tank_href(url):
+    '''
+    get html reference for tanks
 
+    params: 
+        url: str
+    return:
+        tank_list: list
+    '''
     response = get_page_with_cache(url)
     page = BeautifulSoup(response, features="html.parser")
 
@@ -58,7 +65,14 @@ def get_tank_href(url):
     return tank_list
 
 def get_tank_stats(url):
+    '''
+    get stats of a tank
 
+    params: 
+        url: str
+    return:
+        stats: dictionary
+    '''
     stats = {}
     response = get_page_with_cache(url)
     page = BeautifulSoup(response, features="html.parser")
@@ -79,7 +93,21 @@ def get_tank_stats(url):
 
 
 def construct_unique_key(baseurl, params):
+    ''' constructs a key that is guaranteed to uniquely and 
+    repeatably identify an API request by its baseurl and params
     
+    Parameters
+    ----------
+    baseurl: string
+        The URL for the API endpoint
+    params: dict
+        A dictionary of param:value pairs
+    
+    Returns
+    -------
+    string
+        the unique key as a string
+    '''
     if not params:
         return baseurl
     param_strings = []
@@ -91,7 +119,23 @@ def construct_unique_key(baseurl, params):
     return unique_key
 
 def get_page_with_cache(baseurl, params = {}):
+    '''Check the cache for a saved result for this baseurl+params:values
+    combo. If the result is found, return it. Otherwise send a new 
+    request, save it, then return it.
+  
+    Parameters
+    ----------s
+    baseurl: string
+        The URL for the API endpoint
+    params: dict
+        A dictionary of param:value pairs
     
+    Returns
+    -------
+    dict
+        the results of the query as a dictionary loaded from cache
+        JSON
+    '''
     unique_url = construct_unique_key(baseurl, params)
     
     if unique_url in CACHE_DICT:
@@ -105,7 +149,18 @@ def get_page_with_cache(baseurl, params = {}):
         return CACHE_DICT[unique_url]
 
 def open_cache():
+    ''' Opens the cache file if it exists and loads the JSON into
+    the CACHE_DICT dictionary.
+    if the cache file doesn't exist, creates a new cache dictionary
     
+    Parameters
+    ----------
+    None
+    
+    Returns
+    -------
+    The opened cache: dict
+    '''
     try:
         cache_file = open(CACHE_FILENAME, 'r')
         cache_contents = cache_file.read()
@@ -116,7 +171,17 @@ def open_cache():
     return cache_dict
 
 def save_cache(cache_dict):
+    ''' Saves the current state of the cache to disk
     
+    Parameters
+    ----------
+    cache_dict: dict
+        The dictionary to save
+    
+    Returns
+    -------
+    None
+    '''
     dumped_json_cache = json.dumps(cache_dict)
     fw = open(CACHE_FILENAME,"w")
     fw.write(dumped_json_cache)

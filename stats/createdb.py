@@ -1,18 +1,18 @@
-# import sqlite3
-# import pandas 
-
-
-# conn = sqlite3.connect('tank_stats.db')
-# cur = conn.cursor()
-
-# csv = pandas.read_csv('tankstats_stats_modified.csv')
-# csv.to_sql('csv', conn, if_exists='append', index = False)
-
 import csv
 import sqlite3
 import requests
 
 def create_db():
+    ''' create database with sql
+    
+    Parameters
+    ----------
+    None
+    
+    Returns
+    -------
+    None
+    '''
     conn = sqlite3.connect('tank_stats.sqlite')
     cur = conn.cursor()
 
@@ -127,14 +127,37 @@ def create_db():
     conn.close()
 
 def read_csv():
+    ''' read csv files and output csv_reader list
+    
+    Parameters
+    ----------
+    None
 
+    Returns
+    -------
+    list
+        csv_reader
+    '''
     file_contents = open('tankstats_stats_modified.csv', 'r',encoding='UTF-8')
     csv_reader = csv.reader(file_contents)
     next(csv_reader)
     return csv_reader
 
 def get_unique_values(csv_reader, num):
+    ''' remove the repeated values and get the unique values in a field
+    
+    Parameters
+    ----------
+    list
+        csv_reader
+    num
+        field number
 
+    Returns
+    -------
+    list
+        unique values
+    '''
     values = []
     for row in csv_reader:
         if row[num] not in values:
@@ -142,6 +165,9 @@ def get_unique_values(csv_reader, num):
     return values
 
 def load_tiers():
+    ''' load tiers table from csv
+
+    '''
     conn = sqlite3.connect('tank_stats.sqlite')
     cur = conn.cursor()
 
@@ -158,6 +184,10 @@ def load_tiers():
     conn.close()
 
 def load_countries():
+    ''' load countries table from csv
+    
+    '''
+
     conn = sqlite3.connect('tank_stats.sqlite')
     cur = conn.cursor()
 
@@ -174,6 +204,9 @@ def load_countries():
     conn.close()
 
 def load_types():
+    ''' load types table from csv
+    
+    '''
     conn = sqlite3.connect('tank_stats.sqlite')
     cur = conn.cursor()
 
@@ -190,6 +223,9 @@ def load_types():
     conn.close()
 
 def load_tanks():
+    ''' load tanks table from csv
+    
+    '''
     conn = sqlite3.connect('tank_stats.sqlite')
     cur = conn.cursor()
 
