@@ -8,6 +8,14 @@ HOME_URL = "https://tanks.gg"
 TECH_TREE_URL = "https://tanks.gg/techtree/sweden"
 
 def get_page(url):
+    '''
+    get html response using selenuium
+
+    params: 
+        url: page
+    return:
+        response: html response
+    '''
 
     browser = webdriver.Chrome()
     browser.get(url)
@@ -17,7 +25,14 @@ def get_page(url):
     return response
 
 def get_nation_href(url):
+    '''
+    get html reference for nations
 
+    params: 
+        url: page
+    return:
+        nation_list: a list contains 
+    '''
     response = get_page_with_cache(url)
     page = BeautifulSoup(response, features="html.parser")
     
@@ -51,7 +66,17 @@ def get_tank_stats(url):
     stats_cards = page.find_all('div', class_ = 'sections')[0]
     for stat in stats_cards.find_all('div', class_ = 'stat-line'):
         stats[stat.find('label').text] = stat.find('span').text
+
+    title = page.find_all('div', class_ = 'clearfix header')[0]
+    tags = title.find('small').text.split()
+    stats['Tier'] = tags[1]
+    stats['Country'] = tags[2]
+    if len(tags) == 5:
+        stats['Type'] = tags[3] + ' ' + tags[4]
+    else:
+        stats['Type'] = tags[3]
     return stats
+
 
 def construct_unique_key(baseurl, params):
     
@@ -105,13 +130,16 @@ if __name__ == "__main__":
     nation_list = get_nation_href(TECH_TREE_URL)
     tank_list = []
     tank_stats_dic = {}
+    tank_tags_dic = {}
     for nation in nation_list:
         url = HOME_URL + nation
         tank_list += get_tank_href(url)
     for index, tank in enumerate(tank_list):
         url = HOME_URL + tank
-        tank_stats_dic[tank[6:]] = get_tank_stats(url)
+        stats = get_tank_stats(url)
+        tank_stats_dic[tank[6:]] = stats
         print("Progress "+ str(index) + '/' + str(len(tank_list)-1))
+    
     f = open("tank_list.txt","w")
     f.write(str(tank_list))
     f.close()
@@ -120,5 +148,6 @@ if __name__ == "__main__":
     f = open("tankstats_stats.json","w")
     f.write(dumped_json_cache)
     f.close()
+
 
     
