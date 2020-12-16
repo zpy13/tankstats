@@ -1,0 +1,84 @@
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+.topnav {
+  background-color: #333;
+  overflow: hidden;}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #3145b4;
+  color: white;
+}
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare</title>
+</head>
+<body>
+    <div class="topnav">
+        <a href="/">Home</a>
+        <a href="/search">Search</a>
+        <a href="/tank">Tank</a>
+        <a class="active" href="/compare">Compare</a>
+        <a href="/player">Player</a>
+        <a href="/about">About</a>
+    </div>
+    <p>
+        You can compare a group of tanks with same type and tiers, the results is 
+        sorted by the column you choosed in descending order. Click Submit button to compare.
+    </p>
+    <form action="/comapre/results" method="POST">
+        <p>
+            Type:
+            <select name="type">
+            {% for t in types %}
+                <option name = "{{t}}">{{t}}</option>
+            {% endfor %}
+            </select>
+        </p>
+
+        <p>
+            Tier:
+            <select name="tier">
+            {% for t in tiers %}
+                <option name = "{{t}}">{{t}}</option>
+            {% endfor %}
+            </select>
+        </p>
+
+        <p>
+            Sort by:
+            <select name="ref">
+            {% for t in ref %}
+                <option name = "{{t}}">{{t}}</option>
+            {% endfor %}
+            </select>
+        </p>
+        <input type="submit" value = "Submit">
+    </form>
+    
+</body>
+</html>

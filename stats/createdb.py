@@ -1,6 +1,5 @@
 import csv
 import sqlite3
-import requests
 
 def create_db():
     ''' create database with sql
@@ -138,7 +137,7 @@ def read_csv():
     list
         csv_reader
     '''
-    file_contents = open('tankstats_stats_modified.csv', 'r',encoding='UTF-8')
+    file_contents = open('tankstats_stats_modified.csv', 'r', encoding='UTF-8')
     csv_reader = csv.reader(file_contents)
     next(csv_reader)
     return csv_reader
